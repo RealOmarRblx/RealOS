@@ -1,2 +1,3 @@
-# RealOS
-A customizable mobile OS web simulator inspired by OriginOS and HyperOS, featuring animated UI, and icon customization.
+## RealOS
+
+A mobile OS simulator web made by RealOmar, inspired by OriginOS web and HyperOS
