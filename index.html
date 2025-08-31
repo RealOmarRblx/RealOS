@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>RealOS</title>
+<link rel="stylesheet" href="style.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="stage">
+  <div id="phone" class="phone">
+    <header class="status-bar">
+      <div id="timeStatus">12:00</div>
+      <div>📶 🔋</div>
+    </header>
+
+    <main id="home" class="home">
+      <div class="icons" id="icons">
+        <button class="icon" data-app="notes"><span class="material-icons">note</span><span class="label">Notes</span></button>
+        <button class="icon" data-app="music"><span class="material-icons">music_note</span><span class="label">Music</span></button>
+        <button class="icon" data-app="camera"><span class="material-icons">photo_camera</span><span class="label">Camera</span></button>
+        <button class="icon" data-app="call"><span class="material-icons">call</span><span class="label">Call</span></button>
+        <button class="icon" data-app="calendar"><span class="material-icons">calendar_today</span><span class="label">Calendar</span></button>
+        <button class="icon" data-app="browser"><span class="material-icons">public</span><span class="label">Browser</span></button>
+        <button class="icon" data-app="settings"><span class="material-icons">settings</span><span class="label">Settings</span></button>
+      </div>
+    </main>
+
+    <div id="blurOverlay" class="blur-overlay hidden"></div>
+
+    <section id="appLayer" class="app-layer">
+      <article id="notes" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Notes</h3></div>
+        <div class="app-body"><textarea id="notesArea" placeholder="Write notes..."></textarea><div class="row"><button id="saveNote">Save</button><button id="clearNotes">Clear</button></div></div>
+      </article>
+
+      <article id="music" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Music</h3></div>
+        <div class="app-body music-body">
+          <div id="albumArt" class="album-art">🎵</div>
+          <audio id="musicPlayer" controls></audio>
+          <input type="file" id="uploadMP3" accept=".mp3" />
+        </div>
+      </article>
+
+      <article id="camera" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Camera</h3></div>
+        <div class="app-body camera-body">
+          <video id="camVideo" autoplay playsinline></video>
+          <div class="row"><button id="camStart">Start</button><button id="camStop">Stop</button></div>
+        </div>
+      </article>
+
+      <article id="call" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Dialer</h3></div>
+        <div class="app-body dialer">
+          <div id="dialNumber" class="dial-number"></div>
+          <div class="pad">
+            <button class="key">1</button><button class="key">2</button><button class="key">3</button>
+            <button class="key">4</button><button class="key">5</button><button class="key">6</button>
+            <button class="key">7</button><button class="key">8</button><button class="key">9</button>
+            <button class="key">*</button><button class="key">0</button><button class="key">#</button>
+          </div>
+          <div class="row"><button id="callBtn">Call</button><button id="endCallBtn" class="hidden">End</button></div>
+          <div id="callStatus" class="call-status"></div>
+        </div>
+      </article>
+
+      <article id="calendar" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Calendar</h3></div>
+        <div class="app-body calendar-body">
+          <div id="calendarWidget"></div>
+          <div class="row">
+            <input id="eventDate" type="date" />
+            <input id="eventText" placeholder="Event title" />
+            <button id="addEvent">Add</button>
+          </div>
+          <ul id="eventsList" class="events-list"></ul>
+        </div>
+      </article>
+
+      <article id="browser" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Browser</h3></div>
+        <div class="app-body">
+          <input id="miniUrl" placeholder="https://example.com" />
+          <button id="goUrl">Go</button>
+          <iframe id="miniView" class="mini-view" sandbox=""></iframe>
+        </div>
+      </article>
+
+      <article id="settings" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Settings</h3></div>
+        <div class="app-body settings-body">
+          <div class="row"><label>Brightness</label><input id="brightness" type="range" min="30" max="140" value="100" /></div>
+          <div class="row"><label>Wallpaper</label><input id="wallpaperFile" type="file" accept="image/*" /></div>
+          <div class="row"><label>Icon radius</label><input id="iconRadius" type="range" min="8" max="26" value="18" /></div>
+          <div class="about-card"><div class="title">RealOS</div><div>Version 2.0 Beta</div><div>Credits: RealOmar</div></div>
+        </div>
+      </article>
+
+      <article id="calculator" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Calculator</h3></div>
+        <div class="app-body calculator-body">
+          <input id="calcInput" readonly />
+          <div class="calc-pad">
+            <button class="calc-btn">7</button><button class="calc-btn">8</button><button class="calc-btn">9</button>
+            <button class="calc-btn">4</button><button class="calc-btn">5</button><button class="calc-btn">6</button>
+            <button class="calc-btn">1</button><button class="calc-btn">2</button><button class="calc-btn">3</button>
+            <button class="calc-btn">0</button><button class="calc-btn">.</button>
+            <button class="calc-btn">+</button><button class="calc-btn">-</button>
+            <button class="calc-btn">×</button><button class="calc-btn">÷</button>
+            <button class="calc-btn">C</button><button class="calc-btn">=</button>
+          </div>
+        </div>
+      </article>
+
+      <article id="messages" class="app-window">
+        <div class="app-head"><button class="back">←</button><h3>Messages</h3></div>
+        <div class="app-body messages-body">
+          <div id="msgsList" class="msgs-list"></div>
+          <div class="row">
+            <input id="msgInput" placeholder="Type a message" />
+            <button id="sendMsg">Send</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <nav class="dock">
+      <button class="dock-app" data-app="calculator"><div class="squ">🧮</div></button>
+      <button class="dock-app" data-app="messages"><div class="squ">💬</div></button>
+    </nav>
+  </div>
+</div>
+
+<audio id="bgAudio"></audio>
+<script src="script.js"></script>
+</body>
+</html>
