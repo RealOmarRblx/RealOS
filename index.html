@@ -13,12 +13,24 @@
     <div class="frame">
       <div id="phone" class="phone">
         <div id="offOverlay" class="off-overlay hidden"></div>
+
+        <div id="lockScreen" class="lock-screen" data-locked="1">
+          <div class="lock-top">
+            <div id="lockTime" class="lock-time">12:00</div>
+          </div>
+          <div class="lock-center">
+            <div class="swipe-up-hint">Swipe up to unlock</div>
+          </div>
+          <div id="fpCircle" class="fp-circle hidden"></div>
+          <div id="unlockZone" class="unlock-zone" aria-hidden="false"></div>
+        </div>
+
         <header class="status-bar">
           <div id="timeStatus">12:00</div>
           <div class="status-icons"><span class="material-icons">signal_cellular_alt</span><span class="material-icons">battery_full</span></div>
         </header>
 
-        <main id="home" class="home">
+        <main id="home" class="home" aria-hidden="false">
           <div class="icons" id="icons">
             <button class="icon" data-app="notes"><span class="material-icons">note</span><span class="label">Notes</span></button>
             <button class="icon" data-app="music"><span class="material-icons">music_note</span><span class="label">Music</span></button>
@@ -47,8 +59,10 @@
             <div class="app-head"><button class="back">←</button><h3>Music</h3></div>
             <div class="app-body music-body">
               <div id="albumArt" class="album-art">🎵</div>
-              <audio id="musicPlayer" controls></audio>
-              <input id="uploadMP3" type="file" accept="audio/*" />
+              <div class="music-controls">
+                <audio id="musicPlayer" controls></audio>
+                <div class="row"><input id="uploadMP3" type="file" accept="audio/*" /></div>
+              </div>
             </div>
           </article>
 
@@ -121,9 +135,77 @@
           <article id="settings" class="app-window" aria-hidden="true">
             <div class="app-head"><button class="back">←</button><h3>Settings</h3></div>
             <div class="app-body settings-body">
-              <div class="row"><label>Brightness</label><input id="brightness" type="range" min="30" max="140" value="100" /></div>
-              <div class="row"><label>Wallpaper</label><input id="wallpaperFile" type="file" accept="image/*" /></div>
-              <div class="about-card"><div class="title">RealOS</div><div>Version 2.0 Beta</div><div>Credits: RealOmar</div></div>
+              <div id="settingsList" class="settings-list">
+                <button class="settings-row" data-page="display"><span class="s-icon"><span class="material-icons">brightness_medium</span></span><span class="s-text">Display & Brightness</span><span class="chev">›</span></button>
+                <button class="settings-row" data-page="sounds"><span class="s-icon"><span class="material-icons">notifications</span></span><span class="s-text">Sounds & Haptics</span><span class="chev">›</span></button>
+                <button class="settings-row" data-page="animations"><span class="s-icon"><span class="material-icons">movie</span></span><span class="s-text">Animations</span><span class="chev">›</span></button>
+                <button class="settings-row" data-page="wallpaper"><span class="s-icon"><span class="material-icons">photo</span></span><span class="s-text">Wallpaper</span><span class="chev">›</span></button>
+                <button class="settings-row" data-page="appicons"><span class="s-icon"><span class="material-icons">apps</span></span><span class="s-text">App Icons</span><span class="chev">›</span></button>
+                <button class="settings-row" data-page="security"><span class="s-icon"><span class="material-icons">fingerprint</span></span><span class="s-text">Security</span><span class="chev">›</span></button>
+                <button class="settings-row" data-page="about"><span class="s-icon"><span class="material-icons">info</span></span><span class="s-text">About</span><span class="chev">›</span></button>
+              </div>
+
+              <div id="settingsPages" class="settings-pages hidden">
+                <div id="display" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>Display & Brightness</h4></div>
+                  <div class="row"><label>Brightness</label><input id="s_brightness" type="range" min="30" max="140" value="100" /></div>
+                </div>
+
+                <div id="sounds" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>Sounds & Haptics</h4></div>
+                  <div class="row"><label>Ringtone</label><select id="ringtone"><option>Default</option></select></div>
+                </div>
+
+                <div id="animations" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>Animations</h4></div>
+                  <div class="row"><label>Reduce Motion</label><input id="reduceMotion" type="checkbox" /></div>
+                </div>
+
+                <div id="wallpaper" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>Wallpaper</h4></div>
+                  <div class="row"><input id="s_wallpaperFile" type="file" accept="image/*" /></div>
+                </div>
+
+                <div id="appicons" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>App Icons</h4></div>
+                  <div class="row">No customization available</div>
+                </div>
+
+                <div id="security" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>Security</h4></div>
+                  <div class="row"><button id="setupFingerprint">Set up Fingerprint</button></div>
+                </div>
+
+                <div id="about" class="s-page hidden">
+                  <div class="s-head"><button class="s-back">←</button><h4>About</h4></div>
+                  <div class="about-card">
+                    <div class="title">RealOS</div>
+                    <div>Device: RealPhone</div>
+                    <div>Version 3.01 Beta</div>
+                    <div>Credits: RealOmar</div>
+                    <div class="specs">
+                      <h5>Specifications</h5>
+                      <ul>
+                        <li>Storage: 128GB</li>
+                        <li>RAM: 12GB</li>
+                        <li>CPU: Snapdragon 8s Gen 4</li>
+                        <li>Display: 6.7" OLED 120Hz</li>
+                        <li>Battery: 5000mAh</li>
+                      </ul>
+                    </div>
+                    <div class="changelog">
+                      <h5>Changelog</h5>
+                      <ul>
+                        <li>Redesigned Settings</li>
+                        <li>New icons</li>
+                        <li>New lockscreen</li>
+                        <li>New fingerprint</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </article>
         </section>
@@ -131,6 +213,21 @@
     </div>
 
     <button id="powerBtn" class="power-btn" aria-pressed="true" title="Power"></button>
+  </div>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-card">
+    <div id="modalMsg" class="modal-msg"></div>
+    <div class="modal-actions"><button id="modalOk">OK</button></div>
+  </div>
+</div>
+
+<div id="enrollModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-msg">Place and hold finger on the circle to enroll</div>
+    <div class="enroll-area"><div id="enrollCircle" class="enroll-circle"></div></div>
+    <div class="modal-actions"><button id="enrollCancel">Cancel</button></div>
   </div>
 </div>
 
