@@ -11,10 +11,9 @@
 <div class="stage">
   <div class="phone-shell">
     <div class="frame">
-      <div id="phone" class="phone">
+      <div id="phone" class="phone" data-theme="dark">
         <div id="offOverlay" class="off-overlay hidden"></div>
-
-        <div id="lockScreen" class="lock-screen" data-locked="1">
+        <div id="lockScreen" class="lock-screen hidden" data-locked="1">
           <div class="lock-top">
             <div id="lockTime" class="lock-time">12:00</div>
           </div>
@@ -25,9 +24,13 @@
           <div id="unlockZone" class="unlock-zone" aria-hidden="false"></div>
         </div>
 
-        <header class="status-bar">
+        <header class="status-bar" id="statusBar">
           <div id="timeStatus">12:00</div>
-          <div class="status-icons"><span class="material-icons">signal_cellular_alt</span><span class="material-icons">battery_full</span></div>
+          <div class="status-icons">
+            <span class="material-icons">signal_cellular_alt</span>
+            <span class="material-icons">wifi</span>
+            <span class="material-icons">battery_full</span>
+          </div>
         </header>
 
         <main id="home" class="home" aria-hidden="false">
@@ -46,23 +49,84 @@
 
         <div id="blurOverlay" class="blur-overlay hidden"></div>
 
+        <div id="controlCenter" class="control-center hidden" aria-hidden="true">
+          <div class="cc-card">
+            <div class="cc-row">
+              <button class="cc-btn" data-action="wifi" aria-pressed="false"><span class="material-icons">wifi</span></button>
+              <button class="cc-btn" data-action="mobile" aria-pressed="false"><span class="material-icons">data_usage</span></button>
+              <button class="cc-btn" data-action="airplane" aria-pressed="false"><span class="material-icons">airplanemode_active</span></button>
+              <button class="cc-btn" data-action="bluetooth" aria-pressed="false"><span class="material-icons">bluetooth</span></button>
+              <button class="cc-btn" data-action="settings" aria-pressed="false"><span class="material-icons">settings</span></button>
+              <button class="cc-btn" data-action="battery" aria-pressed="false"><span class="material-icons">battery_saver</span></button>
+              <button class="cc-btn" data-action="flashlight" aria-pressed="false"><span class="material-icons">flashlight_on</span></button>
+              <button class="cc-btn" data-action="dnd" aria-pressed="false"><span class="material-icons">do_not_disturb_on</span></button>
+              <button class="cc-btn" data-action="alarm" aria-pressed="false"><span class="material-icons">alarm</span></button>
+              <button class="cc-btn" data-action="cast" aria-pressed="false"><span class="material-icons">cast</span></button>
+            </div>
+            <div class="cc-divider"></div>
+            <div class="cc-music">
+              <div class="cc-art small" id="ccArt">🎵</div>
+              <div class="cc-info">
+                <div id="ccTrack" class="cc-track">Not Playing</div>
+                <div id="ccArtist" class="cc-artist">—</div>
+              </div>
+              <div class="cc-controls">
+                <button id="ccPrev" class="cc-small"><span class="material-icons">skip_previous</span></button>
+                <button id="ccPlay" class="cc-small"><span class="material-icons">play_arrow</span></button>
+                <button id="ccNext" class="cc-small"><span class="material-icons">skip_next</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="inAppNav" class="in-app-nav"></div>
+
         <section id="appLayer" class="app-layer">
           <article id="notes" class="app-window" aria-hidden="true">
             <div class="app-head"><button class="back">←</button><h3>Notes</h3></div>
-            <div class="app-body">
-              <textarea id="notesArea" placeholder="Write notes..."></textarea>
-              <div class="row"><button id="saveNote">Save</button><button id="clearNotes">Clear</button></div>
+            <div class="app-body notes-ui">
+              <div class="notes-header">
+                <input id="notesSearch" placeholder="Search notes" />
+                <button id="newNote">New</button>
+              </div>
+              <ul id="notesList" class="notes-list"></ul>
+              <div class="note-editor hidden" id="noteEditor">
+                <input id="noteTitle" placeholder="Title" />
+                <div class="row" style="gap:10px;align-items:center">
+                  <label style="font-size:13px">Checklist</label>
+                  <input id="noteChecklistToggle" type="checkbox" />
+                </div>
+                <textarea id="notesArea" placeholder="Write notes or list items (one per line)"></textarea>
+                <div class="row"><button id="saveNote">Save</button><button id="clearNotes">Delete</button></div>
+              </div>
             </div>
           </article>
 
           <article id="music" class="app-window" aria-hidden="true">
             <div class="app-head"><button class="back">←</button><h3>Music</h3></div>
-            <div class="app-body music-body">
-              <div id="albumArt" class="album-art">🎵</div>
-              <div class="music-controls">
-                <audio id="musicPlayer" controls></audio>
-                <div class="row"><input id="uploadMP3" type="file" accept="audio/*" /></div>
+            <div class="app-body music-ui">
+              <div class="music-art-row">
+                <div id="albumArt" class="album-art">
+                  <img id="albumImg" class="hidden" />
+                  <div id="albumPlaceholder">🎵</div>
+                </div>
+                <div class="track-info">
+                  <div id="trackTitle" class="track-title">Not Playing</div>
+                  <div id="trackArtist" class="track-artist">—</div>
+                </div>
               </div>
+              <div class="music-progress">
+                <span id="curTime">0:00</span>
+                <input id="progress" type="range" min="0" max="100" value="0" />
+                <span id="durTime">0:00</span>
+              </div>
+              <div class="music-controls">
+                <button id="prevBtn" class="m-btn"><span class="material-icons">skip_previous</span></button>
+                <button id="playBtn" class="m-btn play"><span class="material-icons">play_arrow</span></button>
+                <button id="nextBtn" class="m-btn"><span class="material-icons">skip_next</span></button>
+              </div>
+              <div class="row"><input id="uploadMP3" type="file" accept="audio/*" /></div>
+              <audio id="musicPlayer" preload="metadata"></audio>
             </div>
           </article>
 
@@ -87,15 +151,26 @@
 
           <article id="call" class="app-window" aria-hidden="true">
             <div class="app-head"><button class="back">←</button><h3>Dialer</h3></div>
-            <div class="app-body dialer">
+            <div class="app-body dialer-ui">
               <div id="dialNumber" class="dial-number"></div>
-              <div class="pad">
-                <button class="key">1</button><button class="key">2</button><button class="key">3</button>
-                <button class="key">4</button><button class="key">5</button><button class="key">6</button>
-                <button class="key">7</button><button class="key">8</button><button class="key">9</button>
-                <button class="key">*</button><button class="key">0</button><button class="key">#</button>
+              <div class="dial-grid">
+                <button class="dial-key"><div class="num">1</div><div class="sub"></div></button>
+                <button class="dial-key"><div class="num">2</div><div class="sub">ABC</div></button>
+                <button class="dial-key"><div class="num">3</div><div class="sub">DEF</div></button>
+                <button class="dial-key"><div class="num">4</div><div class="sub">GHI</div></button>
+                <button class="dial-key"><div class="num">5</div><div class="sub">JKL</div></button>
+                <button class="dial-key"><div class="num">6</div><div class="sub">MNO</div></button>
+                <button class="dial-key"><div class="num">7</div><div class="sub">PQRS</div></button>
+                <button class="dial-key"><div class="num">8</div><div class="sub">TUV</div></button>
+                <button class="dial-key"><div class="num">9</div><div class="sub">WXYZ</div></button>
+                <button class="dial-key"><div class="num">*</div><div class="sub"></div></button>
+                <button class="dial-key"><div class="num">0</div><div class="sub">+</div></button>
+                <button class="dial-key"><div class="num">#</div><div class="sub"></div></button>
               </div>
-              <div class="row"><button id="callBtn">Call</button><button id="endCallBtn" class="hidden">End</button></div>
+              <div class="row call-actions">
+                <button id="callBtn" class="call-btn"><span class="material-icons">call</span></button>
+                <button id="endCallBtn" class="hidden">End</button>
+              </div>
               <div id="callStatus" class="call-status"></div>
             </div>
           </article>
@@ -140,7 +215,6 @@
                 <button class="settings-row" data-page="sounds"><span class="s-icon"><span class="material-icons">notifications</span></span><span class="s-text">Sounds & Haptics</span><span class="chev">›</span></button>
                 <button class="settings-row" data-page="animations"><span class="s-icon"><span class="material-icons">movie</span></span><span class="s-text">Animations</span><span class="chev">›</span></button>
                 <button class="settings-row" data-page="wallpaper"><span class="s-icon"><span class="material-icons">photo</span></span><span class="s-text">Wallpaper</span><span class="chev">›</span></button>
-                <button class="settings-row" data-page="appicons"><span class="s-icon"><span class="material-icons">apps</span></span><span class="s-text">App Icons</span><span class="chev">›</span></button>
                 <button class="settings-row" data-page="security"><span class="s-icon"><span class="material-icons">fingerprint</span></span><span class="s-text">Security</span><span class="chev">›</span></button>
                 <button class="settings-row" data-page="about"><span class="s-icon"><span class="material-icons">info</span></span><span class="s-text">About</span><span class="chev">›</span></button>
               </div>
@@ -149,6 +223,7 @@
                 <div id="display" class="s-page hidden">
                   <div class="s-head"><button class="s-back">←</button><h4>Display & Brightness</h4></div>
                   <div class="row"><label>Brightness</label><input id="s_brightness" type="range" min="30" max="140" value="100" /></div>
+                  <div class="row"><label>Theme</label><select id="themeSelect"><option value="dark">Dark</option><option value="light">Light</option></select></div>
                 </div>
 
                 <div id="sounds" class="s-page hidden">
@@ -158,17 +233,20 @@
 
                 <div id="animations" class="s-page hidden">
                   <div class="s-head"><button class="s-back">←</button><h4>Animations</h4></div>
+                  <div class="row"><label>Animation Speed</label>
+                    <select id="animSpeed">
+                      <option value="0.5">0.5x</option>
+                      <option value="1">1x</option>
+                      <option value="1.5">1.5x</option>
+                      <option value="2">2x</option>
+                    </select>
+                  </div>
                   <div class="row"><label>Reduce Motion</label><input id="reduceMotion" type="checkbox" /></div>
                 </div>
 
                 <div id="wallpaper" class="s-page hidden">
                   <div class="s-head"><button class="s-back">←</button><h4>Wallpaper</h4></div>
                   <div class="row"><input id="s_wallpaperFile" type="file" accept="image/*" /></div>
-                </div>
-
-                <div id="appicons" class="s-page hidden">
-                  <div class="s-head"><button class="s-back">←</button><h4>App Icons</h4></div>
-                  <div class="row">No customization available</div>
                 </div>
 
                 <div id="security" class="s-page hidden">
@@ -179,9 +257,9 @@
                 <div id="about" class="s-page hidden">
                   <div class="s-head"><button class="s-back">←</button><h4>About</h4></div>
                   <div class="about-card">
-                    <div class="title">RealOS</div>
+                    <div class="title rainbow">RealOS</div>
                     <div>Device: RealPhone</div>
-                    <div>Version 3.01 Beta</div>
+                    <div>Version 4.0 Beta</div>
                     <div>Credits: RealOmar</div>
                     <div class="specs">
                       <h5>Specifications</h5>
@@ -196,14 +274,18 @@
                     <div class="changelog">
                       <h5>Changelog</h5>
                       <ul>
-                        <li>Redesigned Settings</li>
-                        <li>New icons</li>
-                        <li>New lockscreen</li>
-                        <li>New fingerprint</li>
+                        <li>New app animation</li>
+                        <li>New App UI (Call, Music)</li>
+                        <li>New light mode</li>
+                        <li>New control center</li>
+                        <li>Music app now grabs metadata from the MP3 files and shows the album cover if available</li>
+                        <li>Removed blur background in apps</li>
+                        <li>New navigation bar</li>
                       </ul>
                     </div>
                   </div>
                 </div>
+
               </div>
 
             </div>
